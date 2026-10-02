@@ -1,0 +1,12 @@
+{
+  "name": "imd-request-check-consistency",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A reproducible QA set for consistency of the IMD swarm free request evaluator.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node scripts/check-consistency.mjs"
+  }
+}

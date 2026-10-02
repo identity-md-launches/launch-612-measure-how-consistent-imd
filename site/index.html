@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IMD request check consistency set</title>
+    <style>
+      :root { color-scheme: light; --ink: #182522; --muted: #4b5e58; --paper: #f7f8f2; --line: #d5ddd6; --accent: #235f4d; }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.6 system-ui, sans-serif; }
+      .notice { padding: 0.9rem max(1rem, calc((100vw - 58rem) / 2)); color: #fff; background: #263b34; font-weight: 650; }
+      main { width: min(58rem, calc(100% - 2rem)); margin: 3.5rem auto; }
+      h1 { max-width: 14ch; margin: 0 0 1rem; font-size: clamp(2.3rem, 7vw, 4.5rem); line-height: 1.04; letter-spacing: -0.04em; }
+      p { max-width: 68ch; color: var(--muted); }
+      .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.8rem; margin-top: 2rem; }
+      a { display: block; padding: 1rem; color: var(--accent); border: 1px solid var(--line); border-radius: 0.7rem; background: #fff; font-weight: 650; }
+      a:hover { border-color: var(--accent); }
+      code { font-size: 0.92em; }
+      footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <div class="notice" role="note">Experimental, commissioned as a test of the IMD swarm. It may not work as described. Read the code, start with small amounts, no warranty.</div>
+    <main>
+      <h1>Request check consistency set</h1>
+      <p>A reproducible QA set that sends 20 fixed documentation examples and labeled variants to the IMD free request evaluator five times each. The sequential runner makes 100 calls with at least three seconds between starts.</p>
+      <p>Run it with Node.js 20 or newer using <code>npm run check</code>. The script uses built-in fetch and records raw replies, verdicts, agreement rates, and blocker flips.</p>
+      <nav class="links" aria-label="Project files">
+        <a href="../report.md">Read the report</a>
+        <a href="../bodies/requests.json">Review the fixed bodies</a>
+        <a href="../results/latest.json">Open raw results</a>
+        <a href="../scripts/check-consistency.mjs">Read the runner</a>
+      </nav>
+      <footer>Free public endpoint only. The runner does not create or pay for requests.</footer>
+    </main>
+  </body>
+</html>

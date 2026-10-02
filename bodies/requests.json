@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 1,
+  "endpoint": "https://api.imd.fun/requests/check",
+  "cases": [
+    {
+      "id": "job-report-doc-example",
+      "action": "job.open",
+      "source": "API docs job.open quote example",
+      "label": "Documentation example: sourced report request",
+      "body": {
+        "action": "job.open",
+        "input": {
+          "objective": "Write a sourced report comparing three approaches to deterministic EVM testing.",
+          "skill": "research-report",
+          "outputs": [{ "name": "report", "path": "artifacts/report.md", "mediaType": "text/markdown" }],
+          "minCitations": 5,
+          "github": false
+        }
+      }
+    },
+    {
+      "id": "job-audit-doc-example",
+      "action": "job.open",
+      "source": "API docs job body example",
+      "label": "Documentation example: repository audit",
+      "body": {
+        "action": "job.open",
+        "input": {
+          "objective": "Audit the staking vault and its reward accounting in this repository.",
+          "template": "audit",
+          "repoUrl": "https://github.com/owner/repo.git",
+          "baseCommit": "0123456789abcdef0123456789abcdef01234567"
+        }
+      }
+    },
+    {
+      "id": "job-continue-doc-example",
+      "action": "job.continue",
+      "source": "API docs continuation example",
+      "label": "Documentation example: continue a project",
+      "body": {
+        "action": "job.continue",
+        "input": {
+          "parentJobId": "PARENT_JOB_ID",
+          "objective": "Add a claim page that shows each holder's vested balance.",
+          "skill": "build-website",
+          "ipfs": true
+        }
+      }
+    },
+    {
+      "id": "launch-tip-vault-variant",
+      "action": "launch.open",
+      "source": "API docs Tip Vault workflow draft, adapted to the documented launch body",
+      "label": "Variant: Tip Vault launch on Sepolia",
+      "body": {
+        "action": "launch.open",
+        "input": {
+          "objective": "Build and test a fixed-supply ERC-20 called Tip Vault (TIPV), then deploy it to Sepolia.",
+          "template": "single",
+          "onchain": "evm_project",
+          "chainId": 11155111,
+          "github": true
+        }
+      }
+    },
+    {
+      "id": "workflow-tip-vault-doc-example",
+      "action": "workflow.open",
+      "source": "API docs workflow.open Tip Vault example",
+      "label": "Documentation example: Tip Vault release",
+      "body": {
+        "action": "workflow.open",
+        "input": {
+          "request": "Build an ERC-20 token called Tip Vault (symbol TIPV) with a fixed supply minted to the deployer, a full Foundry test suite and an independent review; deploy it; then publish a small website that shows the token, its supply and a connected wallet's balance.",
+          "context": "Sepolia only. GitHub publication and IPFS hosting are approved. Keep the supply fixed; no owner mint.",
+          "draft": {
+            "objective": "Build the TIPV ERC-20 with tests and an independent review, deploy it, then build the website against the live deployment.",
+            "shape": "chain",
+            "onchain": "evm_project",
+            "github": true,
+            "ipfs": true,
+            "contracts": ["TipVault"],
+            "steps": [
+              { "skill": "build-contract-project" },
+              { "skill": "frontend-for-contract" },
+              { "skill": "adversarial-review" }
+            ]
+          },
+          "permissions": { "github": true, "ipfs": true, "onchain": { "kind": "evm_project", "chainId": 11155111 } }
+        }
+      }
+    },
+    {
+      "id": "workflow-tip-jar-doc-example",
+      "action": "workflow.open",
+      "source": "API docs workflow.open Tip Jar example",
+      "label": "Documentation example: Tip Jar release",
+      "body": {
+        "action": "workflow.open",
+        "input": {
+          "request": "Release Tip Jar (TIPS): a fixed-supply ERC-20 and a TipJar contract that forwards ETH tips to a recipient, with invariant tests and an independent review; deploy both on Sepolia; then publish a one-page site to tip and read totals.",
+          "context": "Sepolia only. GitHub and IPFS approved. Site name tip-jar. No owner, no admin, no upgrade.",
+          "draft": {
+            "objective": "Build TIPS and TipJar with tests and a review, deploy them, then build the tipping page against the live deployment.",
+            "shape": "dag",
+            "onchain": "evm_project",
+            "github": true,
+            "ipfs": "tip-jar",
+            "contracts": ["TipsToken", "TipJar"],
+            "references": ["solidity-security-review"],
+            "steps": [
+              {
+                "skill": "build-contract-project",
+                "key": "contracts",
+                "dependsOn": [],
+                "objective": "TipsToken and TipJar with a Foundry project.",
+                "acceptanceCriteria": ["TipJar never holds ETH after a tip"]
+              },
+              {
+                "skill": "write-foundry-tests",
+                "key": "tests",
+                "dependsOn": ["contracts"],
+                "paths": ["test"],
+                "objective": "Invariant and fuzz tests for TipJar."
+              },
+              { "skill": "adversarial-review", "key": "review", "dependsOn": ["tests"] },
+              {
+                "skill": "frontend-for-contract",
+                "key": "site",
+                "dependsOn": ["review"],
+                "objective": "Connect a wallet, tip in ETH, show the recipient's total."
+              }
+            ]
+          },
+          "permissions": { "github": true, "ipfs": "tip-jar", "onchain": { "kind": "evm_project", "chainId": 11155111 } }
+        }
+      }
+    },
+    {
+      "id": "oracle-release-doc-example",
+      "action": "oracle.request",
+      "source": "API docs POST /requests/check oracle question example",
+      "label": "Documentation example: dated GitHub release question",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "Did openai/openai-python publish a non-prerelease GitHub release on September 21, 2026 UTC?",
+          "panelSize": 5,
+          "answerType": "bool",
+          "evidence": "panel",
+          "chainId": 1
+        }
+      }
+    },
+    {
+      "id": "oracle-burn-doc-example",
+      "action": "oracle.request",
+      "source": "API docs POST /requests/check number from chain data example",
+      "label": "Documentation example: token burn quantity",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "How much IMD was burned on Ethereum mainnet in the window?",
+          "panelSize": 5,
+          "answerType": "uint256",
+          "evidence": "chain",
+          "chainId": 1
+        }
+      }
+    },
+    {
+      "id": "oracle-agent-count-doc-example",
+      "action": "oracle.request",
+      "source": "API docs POST /requests/check count example",
+      "label": "Documentation example: registered agent count",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "How many ERC-8004 agents were registered on Ethereum mainnet in the window?",
+          "panelSize": 5,
+          "answerType": "uint256",
+          "evidence": "chain",
+          "chainId": 1
+        }
+      }
+    },
+    {
+      "id": "oracle-v4-price-doc-example",
+      "action": "oracle.request",
+      "source": "API docs POST /requests/check spot price example",
+      "label": "Documentation example: pool price with sampling definition",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "What was the median spot price of Uniswap v4 pool POOL_ID across the window, in currency0 per 1e18 currency1?",
+          "panelSize": 10,
+          "answerType": "uint256",
+          "evidence": "chain",
+          "chainId": 56,
+          "toleranceBps": 0
+        }
+      }
+    },
+    {
+      "id": "oracle-v4-volume-doc-example",
+      "action": "oracle.request",
+      "source": "API docs POST /requests/check ranking example",
+      "label": "Documentation example: rank Uniswap pools by volume",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "Which three Uniswap v4 pools paired with IMD had the most swap volume in the last 24 hours?",
+          "panelSize": 7,
+          "answerType": "bytes32[]",
+          "evidence": "chain",
+          "chainId": 1,
+          "head": 3
+        }
+      }
+    },
+    {
+      "id": "schedule-daily-weth-doc-example",
+      "action": "schedule.create",
+      "source": "API docs schedule.create oracle example",
+      "label": "Documentation example: daily oracle schedule",
+      "body": {
+        "action": "schedule.create",
+        "input": {
+          "label": "daily WETH volume leader",
+          "action": "oracle.request",
+          "cadence": { "cron": "0 9 * * *", "tz": "UTC" },
+          "runs": 30,
+          "input": {
+            "v": 1,
+            "question": "Which Uniswap v4 pool did the most WETH volume in the last day?",
+            "chainId": 1,
+            "window": { "hours": 24 },
+            "answerType": "bytes32[]",
+            "head": 1,
+            "definitions": { "denomination": "WETH, the absolute swapped amount on the WETH side" },
+            "panelSize": 10,
+            "quorum": 8,
+            "validForSeconds": 86400
+          }
+        }
+      }
+    },
+    {
+      "id": "schedule-weekly-digest-doc-example",
+      "action": "schedule.create",
+      "source": "API docs schedule.create job example",
+      "label": "Documentation example: weekly research schedule",
+      "body": {
+        "action": "schedule.create",
+        "input": {
+          "label": "weekly EVM testing digest",
+          "action": "job.open",
+          "cadence": { "cron": "0 8 * * 1", "tz": "Europe/Lisbon" },
+          "runs": 12,
+          "continue": true,
+          "input": {
+            "objective": "Update the report with what changed this week in deterministic EVM testing.",
+            "skill": "research-report",
+            "outputs": [{ "name": "report", "path": "artifacts/report.md", "mediaType": "text/markdown" }],
+            "minCitations": 5,
+            "github": false
+          }
+        }
+      }
+    },
+    {
+      "id": "schedule-topup-doc-example",
+      "action": "schedule.topup",
+      "source": "API docs schedule.topup example",
+      "label": "Documentation example: top up an existing schedule",
+      "body": {
+        "action": "schedule.topup",
+        "input": { "scheduleId": "SCHEDULE_ID", "runs": 30 }
+      }
+    },
+    {
+      "id": "job-report-short-variant",
+      "action": "job.open",
+      "source": "Small variant of API docs job.open quote example",
+      "label": "Variant: same research task with a narrower deliverable",
+      "body": {
+        "action": "job.open",
+        "input": {
+          "objective": "Write a sourced report comparing two approaches to deterministic EVM testing.",
+          "skill": "research-report",
+          "outputs": [{ "name": "report", "path": "artifacts/report.md", "mediaType": "text/markdown" }],
+          "minCitations": 5,
+          "github": false
+        }
+      }
+    },
+    {
+      "id": "job-audit-scope-variant",
+      "action": "job.open",
+      "source": "Small variant of API docs job body audit example",
+      "label": "Variant: same repository audit, narrower accounting scope",
+      "body": {
+        "action": "job.open",
+        "input": {
+          "objective": "Audit reward accounting in the staking vault in this repository and list concrete edge cases.",
+          "template": "audit",
+          "repoUrl": "https://github.com/owner/repo.git",
+          "baseCommit": "0123456789abcdef0123456789abcdef01234567"
+        }
+      }
+    },
+    {
+      "id": "launch-tip-jar-variant",
+      "action": "launch.open",
+      "source": "Small variant of API docs Tip Jar workflow example",
+      "label": "Variant: contract launch with an explicit Sepolia target",
+      "body": {
+        "action": "launch.open",
+        "input": {
+          "objective": "Build a fixed-supply TIPS token and a TipJar contract that forwards tips to a recipient. Add invariant tests and an independent review, then deploy both on Sepolia.",
+          "template": "multi_contract",
+          "onchain": "evm_project",
+          "chainId": 11155111,
+          "github": true
+        }
+      }
+    },
+    {
+      "id": "workflow-tip-vault-short-variant",
+      "action": "workflow.open",
+      "source": "Small variant of API docs workflow.open Tip Vault example",
+      "label": "Variant: shorter Tip Vault request with the same constraints",
+      "body": {
+        "action": "workflow.open",
+        "input": {
+          "request": "Build and test the fixed-supply TIPV ERC-20, review it, deploy on Sepolia, and publish a page showing its supply and a connected wallet's balance.",
+          "context": "Sepolia only. GitHub and IPFS are approved. No owner mint.",
+          "draft": {
+            "objective": "Build TIPV with tests and an independent review, deploy it, then build its website against the live deployment.",
+            "shape": "chain",
+            "onchain": "evm_project",
+            "github": true,
+            "ipfs": true,
+            "steps": [
+              { "skill": "build-contract-project" },
+              { "skill": "frontend-for-contract" },
+              { "skill": "adversarial-review" }
+            ]
+          },
+          "permissions": { "github": true, "ipfs": true, "onchain": { "kind": "evm_project", "chainId": 11155111 } }
+        }
+      }
+    },
+    {
+      "id": "oracle-release-date-variant",
+      "action": "oracle.request",
+      "source": "Small variant of API docs POST /requests/check oracle question example",
+      "label": "Variant: adjacent UTC release date",
+      "body": {
+        "action": "oracle.request",
+        "input": {
+          "question": "Did openai/openai-python publish a non-prerelease GitHub release on September 22, 2026 UTC?",
+          "panelSize": 5,
+          "answerType": "bool",
+          "evidence": "panel",
+          "chainId": 1
+        }
+      }
+    },
+    {
+      "id": "schedule-one-run-variant",
+      "action": "schedule.create",
+      "source": "Small boundary variant of API docs schedule.create oracle example",
+      "label": "Variant: same daily question with the minimum one run",
+      "body": {
+        "action": "schedule.create",
+        "input": {
+          "label": "one daily WETH volume check",
+          "action": "oracle.request",
+          "cadence": { "cron": "0 9 * * *", "tz": "UTC" },
+          "runs": 1,
+          "input": {
+            "v": 1,
+            "question": "Which Uniswap v4 pool did the most WETH volume in the last day?",
+            "chainId": 1,
+            "window": { "hours": 24 },
+            "answerType": "bytes32[]",
+            "head": 1,
+            "definitions": { "denomination": "WETH, the absolute swapped amount on the WETH side" },
+            "panelSize": 10,
+            "quorum": 8,
+            "validForSeconds": 86400
+          }
+        }
+      }
+    }
+  ]
+}
